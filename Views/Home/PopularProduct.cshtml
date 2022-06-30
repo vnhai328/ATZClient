@@ -1,0 +1,45 @@
+﻿@model List<ATZClient.Models.ProductView>
+<section class="popular-products">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="title text-center">
+                    <h4>POPULAR PRODUCTS</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="products-slider4 same-nav owl-carousel owl-theme" data-margin="30" data-dots="false" data-nav="true">
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <div class="item">
+                                <div class="product-box common-cart-box">
+                                    <div class="product-img common-cart-img">
+                                        <img src="~/Assest/image/@item._Product.ImageUrl" alt="@item._Product.Name">
+                                        <div class="hover-option">
+                                            <div class="add-cart-btn">
+                                                <a href="/Home/AddCart?ID=@item._Product.ProductID&ImageUrl=@item._Product.ImageUrl&Price=@item._ProductPrice.Price&Name=@item._Product.Name&Color=@item._Product.Color" class="btn btn-primary">Add To Cart</a>
+                                            </div>
+                                            <ul class="hover-icon">
+                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                <li><a href="#test-popup3" class="quickview-popup-link"><i class="fa fa-eye"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-refresh"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-info common-cart-info text-center">
+                                        <a href="product-detail.html" class="cart-name">@item._Product.Name</a>
+                                        <p class="cart-price"><del>@item._ProductPrice.Price$</del>@item._ProductPrice.PriceSale$</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

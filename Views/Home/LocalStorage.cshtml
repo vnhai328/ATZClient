@@ -1,0 +1,122 @@
+﻿@model List<ATZClient.Models.ProductView>
+<section class="popular-products">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="title text-center">
+                    <h4>POPULAR PRODUCTS</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="products-slider4 same-nav owl-carousel owl-theme" data-margin="30" data-dots="false" data-nav="true">
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <div class="item">
+                                <div class="product-box common-cart-box">
+                                    <div class="product-img common-cart-img">
+                                        <img src="~/Assest/image/@item._Product.ImageUrl" alt="@item._Product.Name" id="txtImage_@item._Product.ProductID">
+                                        <div class="hover-option">
+                                            <div class="add-cart-btn">
+                                                <a href="#" onclick="AddCart(@item._Product.ProductID)" class="btn btn-primary">Add To Cart</a>
+                                            </div>
+                                            <ul class="hover-icon">
+                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                <li><a href="#test-popup3" class="quickview-popup-link"><i class="fa fa-eye"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-refresh"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-info common-cart-info text-center">
+                                        <a href="product-detail.html" class="cart-name" id="txtName_@item._Product.ProductID">@item._Product.Name</a>
+                                        <p class="cart-price"><del id="txtPrice_@item._Product.ProductID">@item._ProductPrice.Price$</del>@item._ProductPrice.PriceSale$</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    var arrCart = [];
+    var list = "";
+
+    function renderCart() {
+        const $cart = document.querySelector(".cart")
+        const $total = document.querySelector(".total")
+        arrCart = JSON.parse(window.localStorage.getItem("giohang"));
+        if (arrCart != null && arrCart.length > 0) {
+            /*list = '<tr><td>a</td></tr>';*/
+            for (i in arrCart) {
+                list += '<div class="cart-prodect d-flex">'+
+                            '<div class="cart-img">' +
+                                '<img src="' + arrCart[i].ImageUrl + '" alt="cart-img">'+
+                            '</div>'+
+                            '<div class="cart-product">' +
+                                '<a href="#">'+arrCart[i].Name+'</a>' +
+                                '<p>$ ' + arrCart[i].Price + ' &emsp;' + arrCart[i].Quantily + '</p>' +
+                             '</div>' +
+                                '<a href="/Home/RemoveCart?ID=' + arrCart[i].ID + '" class="close-icon d-flex align-items-center"><i class="ion-close"></i></a>' +
+                         '</div>';
+            }
+        }
+        cart.innerHTML = list;
+    };
+    renderCart();
+</script>
+<script type="text/javascript">
+    var Cart = [];
+    $(document).ready(function () {
+        if (window.localStorage){
+            Cart = JSON.parse(window.localStorage.getItem("giohang"));
+        }
+        if (Cart != null && Cart.length > 0) {
+            document.getElementById("txtCartTotal_localStorage").innerHTML = Cart.length;
+        }
+        else {
+            document.getElementById("txtCartTotal_localStorage").innerHTML = 0;
+        }           
+    });
+
+    function AddCart(id)
+    {
+        var Product = { ID: id, Quantily: 1, Name: "name", ImageUrl: "Url", Price: "price"  };
+        var Name = document.getElementById("txtName_" + id).innerHTML;
+        var ImageUrl = document.getElementById("txtImage_" + id).src;
+        var Price = document.getElementById("txtPrice_" + id).innerHTML;
+        Product.Name = Name;
+        Product.ImageUrl = ImageUrl;
+        Product.Price = Price;
+        if (window.localStorage) {
+                    
+            Cart = JSON.parse(window.localStorage.getItem("giohang"));
+        }
+        if (Cart != null && Cart.length > 0) {
+            var bResult = false;
+            for (i in Cart) {
+                if (Cart[i].ID == id) {
+                    Cart[i].Quantily = Cart[i].Quantily + 1;
+                    bResult = true;
+                    break;
+                }              
+            }
+            if (bResult == false) {
+                Cart.push(Product);
+            }
+        }
+        else {
+            Cart = [];
+            Cart.push(Product);
+        }
+        window.localStorage.setItem("giohang", JSON.stringify(Cart));
+        document.getElementById("txtCartTotal_localStorage").innerHTML = Cart.length;
+        renderCart();
+    }
+</script>

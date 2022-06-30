@@ -1,0 +1,70 @@
+﻿@model List<ATZClient.Models.tblMenu>
+<div class="header-btm">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <div class="header-logo">
+                        <a href="#"><img src="~/Assest/image/logo.png" alt="logo"></a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav">
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    if (item.Parent_id == "-1" && item.Level != 3)
+                                    {
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggler" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@item.Name<i class="fa fa-angle-down"></i><i class="fa fa-angle-right"></i></a>
+                                            <div class="sub-menu dropdown-menu">
+                                                <ul class="all-menu">
+                                                    @foreach (var item2 in Model)
+                                                    {
+                                                        if (item.ID.ToString() == item2.Parent_id)
+                                                        {
+                                                            <li><a href="index.html">@item2.Name</a></li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    }
+                                    else if (item.Parent_id == "-1")
+                                    {
+                                        <li>
+                                            <a class="nav-link dropdown-toggler" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@item.Name<i class="fa fa-angle-down"></i><i class="fa fa-angle-right"></i></a>
+                                            <div class="sub-menu mega-menu dropdown-menu">
+                                                <ul class="d-lg-flex">
+                                                    @foreach (var item3 in Model)
+                                                    {
+                                                        if (item.ID.ToString() == item3.Parent_id)
+                                                        {
+                                                            <li class="submenu-links dropdown col-lg-3">
+                                                                <a href="#" class="menu-title dropdown-toggler" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@item3.Name<i class="fa fa-angle-down"></i><i class="fa fa-angle-right"></i></a>
+                                                                <ul class="all-menu dropdown-menu">
+                                                                    @foreach (var item4 in Model)
+                                                                    {
+                                                                        if (item3.ID.ToString() == item4.Parent_id)
+                                                                        {
+                                                                            <li><a href="shop-list.html">@item4.Name</a></li>  
+                                                                        }
+                                                                    }
+                                                                </ul>
+                                                            </li>
+                                                        }
+                                                    }
+                                                    <li class="submenu-img col-lg-3"><a href="#"><img src="~/Assest/image/header-banner.jpg" alt="banner"></a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    }
+                                }
+                            }
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,236 @@
+﻿
+@{
+    ViewBag.Title = "ViewCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var model = (List<ATZClient.Models.CartItem>)Session["Cart"];
+    int i = 0;
+    }
+
+}
+<!-- Start Breadcrumbs Section -->
+<section class="breadcrumbs-section background_bg" data-img-src="image/cart-breadcrumbs-img.jpg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="page_title text-center">
+                    <h1>my cart</h1>
+                    <ul class="breadcrumb justify-content-center">
+                        <li><a href="index.html">home</a></li>
+                        <li><a href="#">shop</a></li>
+                        <li><span>cart</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Header Section -->
+<!-- Start Cart Section -->
+<section class="cart-section pt_large">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="cart-table table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr class="row-1">
+                                <th class="row-title"><p>Item</p></th>
+                                <th class="row-title"><p>Product Name</p></th>
+                                <th class="row-title"><p>Price</p></th>
+                                <th class="row-title"><p>Quantity</p></th>
+                                <th class="row-title"><p>Subtotal</p></th>
+                                <th class="row-title"><p></p></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (model == null)
+                            {
+
+                            }
+                            else
+                            {
+                                foreach (var item in model)
+                                {
+                                    <tr class="row-2">
+                                        <td class="row-close close-1" data-title="product-remove"><a href="#"><i class="ion-close-circled"></i></a></td>
+                                        <td class="row-img"><img src="@item.Color" alt="cart-img"></td>
+                                        <td class="product-name" data-title="Product"><a id="txtName_@i" href="#">@item.Name</a></td>
+                                        <td class="product-price" data-title="Price"><p id="txtPrice_@i">$ @item.Price</p></td>
+                                        <td class="product-quantity" data-title="Quantity">
+                                            <div class="quantity_filter">
+                                                <input id="txtMinus_@i" type="button" value="-" class="minus" onclick="MinusCart(this.id)">
+                                                <input id="txtQuantity_@i" class="quantity-number qty" type="text" value="@item.Quantily" min="1" max="100" onkeydown="AddCart(this.id)">
+                                                <input id="txtPlus_@i" type="button" value="+" class="plus" onclick="PlusCart(this.id)">
+                                            </div>
+                                        </td>
+                                        <td class="product-total" data-title="Subprice"><p id="txtTotal_@i">$ @(item.Price * item.Quantily)</p></td>
+                                        <td class="row-close close-(@i+2)" data-title="product-remove"><a href="/Home/RemoveCart?ID=@item.ID"><i class="ion-close-circled"></i></a></td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="12">
+                                    <ul class="table-btn">
+                                        <li><a href="@Url.Action("Index","Home")" class="btn btn-secondary"><i class="fa fa-chevron-left"></i>Continue Shopping</a></li>
+                                        <li><a href="#" class="btn btn-primary"><i class="fa fa-refresh"></i>Update cart</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Cart Section -->
+<!-- Start Cart Box Section -->
+<section class="cart-box-section pb_large">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-4 col-md-6">
+                <div class="cart-inner-box box-1 text-center">
+                    <div class="ci-title">
+                        <h6>Promotional code</h6>
+                    </div>
+                    <div class="ci-caption">
+                        <p>Enter Your Coupon Code If you have one</p>
+                        <form>
+                            <input required="" class="form-control" type="text" placeholder="Coupon Code">
+                            <button class="btn btn-secondary" type="submit">Apply Coupon Code</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="cart-inner-box cart-box-section text-center">
+                    <div class="ci-title">
+                        <h6>Cart Total</h6>
+                    </div>
+                    <div class="ci-caption">
+                        <ul>
+                            <li>Subtotal <span>$ 0</span></li>
+                            <li>Total <span id="txtTotalCart">$ @(Session["TotalMoney"] == null ? 0 :  Session["TotalMoney"])</span></li>
+                        </ul>
+                    </div>
+                    <div class="ci-btn">
+                        <a href="@Url.Action("CheckOut","Cart")" onclick="CheckOut()" class="btn btn-primary btn-block rounded-0">Proceed to Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Cart Box Section -->
+<!-- Home Popup Section -->
+<div class="modal fade bd-example-modal-lg main-popup" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="newsletter-pop-up d-flex">
+                    <div class="popup-img">
+                        <img src="image/1_popup-img.jpg" alt="popup-img">
+                    </div>
+                    <div class="popup-form text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="ion-close-round"></i></span>
+                        </button>
+                        <div class="popup-logo">
+                            <img src="image/logo.png" alt="logo">
+                        </div>
+                        <div class="popup-text">
+                            <p>Join us Now</p>
+                            <h6>And get hot news about the theme</h6>
+                        </div>
+                        <form class="subscribe-popup-form" method="post" action="#">
+                            <input name="email" required type="email" placeholder="Enter Your Email">
+                            <button class="btn btn-primary" title="Subscribe" type="submit">Subscribe</button>
+                        </form>
+                        <div class="form-check">
+                            <label>
+                                Don't show this popup again!
+                                <input class="defult-check" type="checkbox" checked="checked">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Screen Load Popup Section -->
+
+<a href="#" class="scrollup" style="display: none;"><i class="ion-ios-arrow-up"></i></a>
+
+<script type="text/javascript">
+    function CheckOut() {
+        var arr = [];
+        var jsData = "{ID:'', Name:''}";
+        for (var j = 0; j < @i; j++) {
+            var idCount = j;
+            var jsonObj = { ID: "id", Name: "name", Price: "price", Quantily: "quantity" };
+            jsonObj.ID = (j).toString();
+            jsonObj.Name = document.getElementById("txtName_" + idCount).innerHTML;
+            jsonObj.Price = document.getElementById("txtPrice_" + idCount).innerHTML.replace("$","");
+            jsonObj.Quantily = document.getElementById("txtQuantity_" + idCount).value;
+            arr.push(jsonObj);
+        }
+        console.log(arr);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckOut", "Cart")',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(arr),
+            dataType: "json",
+            success: function (result) {
+
+            }
+        });
+    }
+    function AddCart(id) {
+        var idProduct = id.replace("txtQuantity_", "");
+
+        var SoLuong = document.getElementById(id).value;
+        var DonGia = document.getElementById("txtPrice_" + idProduct).innerHTML.replace("$ ", "");
+        var Total = document.getElementById("txtTotal_" + idProduct);
+
+        Total.innerHTML = "$ " + (SoLuong * parseFloat(DonGia));
+        CalTotal();
+
+    }
+    function PlusCart(id) {
+
+        var idProduct = id.replace("txtPlus_", "");
+        var Quantity = document.getElementById("txtQuantity_" + idProduct);
+        Quantity.value = parseInt(Quantity.value) + 1;
+        var Price = document.getElementById("txtPrice_" + idProduct).innerHTML.replace("$ ", "");
+        var Total = document.getElementById("txtTotal_" + idProduct);
+        Total.innerHTML = "$ " + Quantity.value * parseFloat(Price);
+        CalTotal();
+    }
+    function MinusCart(id) {
+        var idProduct = id.replace("txtMinus_", "");
+        var Quantity = document.getElementById("txtQuantity_" + idProduct);
+        if (parseInt(Quantity.value) > 0) {
+            Quantity.value = parseInt(Quantity.value) - 1;
+            var Price = document.getElementById("txtPrice_" + idProduct).innerHTML.replace("$ ", "");
+            var Total = document.getElementById("txtTotal_" + idProduct);
+            Total.innerHTML = "$ " + Quantity.value * parseFloat(Price);
+            CalTotal();
+        }
+    }
+    function CalTotal() {
+        var TotalCart = document.getElementById("txtTotalCart");
+        var TotalValue = 0;
+        for (var i = 0; i <= (@i-1); i++) {
+            var GiaTri = document.getElementById("txtTotal_" + (i).toString()).innerHTML.replace("$ ", "");
+            TotalValue = TotalValue + parseFloat(GiaTri);
+        }
+        TotalCart.innerHTML = "$ "+TotalValue;
+    }
+</script>
+

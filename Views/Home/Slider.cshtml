@@ -1,0 +1,47 @@
+﻿@model List<ATZClient.Models.tblSlider>
+@{ 
+    int i = 0;
+    int j = 0;
+    var active = "";
+}    
+<section class="slider pt-0">
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            @foreach (var item in Model)
+            {
+                if (j == 0) { active = "active"; } else { active = ""; }
+            <div class="carousel-item @active slider-area background_bg" data-img-src="@item.ImgUrl">
+                <img src="@item.ImgUrl" alt="sale-banner">
+                <div class="banner_slide_content left-align">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-5 col-md-6 col-sm-7 col-9">
+                                <div class="slider-caption">
+                                    <h1 class="animation" data-animation="fadeInDown" data-animation-delay="0.2s">@item.Title</h1>
+                                    <p class="animation" data-animation="fadeInUp" data-animation-delay="0.6s">@item.Description</p>
+                                    <a href="shop.html" class="btn btn-primary animation" data-animation="fadeInUp" data-animation-delay="1s">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                j++;
+            }          
+            <ol class="carousel-indicators">
+            @foreach (var item in Model) 
+            {
+                if (i == 0) 
+                {
+                    <li data-target="#carouselExampleControls" data-slide-to="@i" class="active"></li>
+                }
+                else
+                {
+                    <li data-target="#carouselExampleControls" data-slide-to="@i" class=""></li>
+                }
+                i++;
+            }
+        </ol>
+        </div>
+    </div>
+</section>
